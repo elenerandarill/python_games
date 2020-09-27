@@ -31,6 +31,7 @@ $ python3 -m pip install freegames
 1) **Flappy Bird** - yellow ball jumps up on up arrow press. Player should avoid contact with green tubes.
 2) **Throne** - player is blue, moves with arrows, has to avoid any collisions, including your own 'tail'.
 3) **Snake** - player should avoid collisions with border, `grey` spiders and own 'tail', as well as collect `green` apples.
+After eating an apple `score` goes up but so does the `speed` of the moving snake.
 
 -----------------------------------------------
 
