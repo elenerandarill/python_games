@@ -1,0 +1,115 @@
+import turtle
+import random
+
+my_wn = turtle.Screen()
+my_pen = turtle.Turtle()
+my_wn.tracer(False)
+my_pen.speed(10)
+my_wn.delay(0)
+
+class Game():
+	sx = 0
+	sy = 0
+	dx = 0
+	dy = 10
+	gx = random.randint(-10, 10) * 10
+	gy = random.randint(-10, 10) * 10
+	
+	snake = [(0, 0)]
+
+game = Game()
+
+def teleport(x,y):
+	my_pen.up() 
+	my_pen.setpos(x,y)
+	my_pen.down()
+
+def my_square(x, y, a, color: str):
+	my_pen.color("black", color)
+	teleport(x,y)
+	my_pen.begin_fill()
+	for i in range(4):
+	   my_pen.forward(a)           
+	   my_pen.right(90)
+	my_pen.end_fill()
+
+def my_circle(x, y, r, color: str):
+	my_pen.color("black", color)
+	teleport(x,y)
+	my_pen.begin_fill()
+	my_pen.circle(r)
+	my_pen.end_fill()
+
+def my_keypress_L():
+	game.dx = -10
+	game.dy = 0
+	
+	
+def my_keypress_R():
+	game.dx = 10
+	game.dy = 0
+	
+
+def my_keypress_U():
+	game.dy = 10
+	game.dx = 0
+	
+def my_keypress_D():
+	game.dy = -10
+	game.dx = 0
+	
+
+def my_timer():
+		
+	#ruch
+	game.snake.insert(0, (game.snake[0][0] + game.dx, game.snake[0][1] + game.dy))
+	game.snake.pop() #ostatni element wylatuje :)
+	game.sx += game.dx
+	game.sy += game.dy
+	
+	#sprawdzenie, czy sie zjadam
+	if len(game.snake) > 2:
+		for e in range (1, len(game.snake)):
+			if game.snake[0] == game.snake[e]:
+				game_over()
+				return
+	
+	eat_apple()
+	
+	#rysowanie snejka
+	my_pen.clear()
+	
+	for j in range (0, len(game.snake)):
+		my_square(game.snake[j][0], game.snake[j][1], 10, "blue")
+	
+	my_square(game.gx, game.gy, 10, "green")
+	my_wn.update()
+	my_wn.ontimer(my_timer, 200)
+	
+
+def eat_apple():
+	if game.sx == game.gx and game.sy == game.gy:
+		game.gx = random.randint(-10, 10) * 10
+		game.gy = random.randint(-10, 10) * 10
+		grow()
+		grow()
+		grow()
+		
+def grow():
+	game.snake.append(game.snake[-1])
+
+def game_over():
+	my_square(game.snake[0][0], game.snake[0][1], 10, "red")
+	my_pen.write("Game Over Man")
+
+my_wn.onkey(my_keypress_L, "Left")
+my_wn.onkey(my_keypress_R, "Right")
+my_wn.onkey(my_keypress_U, "Up")
+my_wn.onkey(my_keypress_D, "Down")
+my_wn.listen()
+
+my_square(game.sx, game.sy, 10, "blue")
+
+my_wn.ontimer(my_timer, 500)
+
+turtle.done()
